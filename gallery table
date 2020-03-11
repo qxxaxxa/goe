@@ -1,0 +1,33 @@
+gallery table
+galleryid    int32
+url          string(42)
+cover			string(99)
+category_id     int(2)
+title			string(111)
+japanese title	string(118)
+tages
+uploader		string(9)
+postedTime		time
+parent			int32
+Language		int16
+fileSize		181.4 MB
+Length（pages）	int(32)
+Favorited（）	int(32)
+Average 		double
+rating count	int(32)
+汉化组
+downloadUrl
+
+
+
+tage table
+tageid			int(32)
+parent_id		int(32)
+title			string(1024)
+Definition 
+
+
+
+
+
+
