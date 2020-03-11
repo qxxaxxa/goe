@@ -14,8 +14,7 @@ import (
 	"time"
 )
 
-func main() {
-
+func startdownload() {
 	base := cachePath()
 	files, _ := ioutil.ReadDir(base)
 	imap := make(map[string]int)
@@ -45,6 +44,7 @@ func main() {
 	reg, _ := regexp.Compile(`\./[\dabcde]{2}/[\dabcde]{2}/([\w]+-[\d]+-[\d]+-[\d]+-[\w]+)`)
 	submatch := reg.FindAllStringSubmatch(string(all), -1)
 	for i, ss := range submatch {
+		time.Sleep(time.Millisecond * 100)
 		fileid := ss[1]
 		split := strings.Split(fileid, "-")
 		if imap[split[0]] == 1 {
@@ -59,39 +59,36 @@ func main() {
 		urlstring := "https://" + hostprefix() + ".ehedgzdwvjcc.hath.network:11759/h/" + fileid + "/keystamp=" + keystampTime + "-" + fmt.Sprintf("%x", sum)[0:10] + ";fileindex=" + fileindex + ";xres=org/" + split[0] + "." + split[4]
 		fmt.Println(urlstring)
 
-		download(urlstring, base, split, fileid)
+		go download(urlstring, base, split, fileid)
 	}
 
 	quit := make(chan int)
 	<-quit
-
 }
 
 func download(urlstring string, base string, split []string, fileid string) {
-	func() {
-		response, _ := http.Get(urlstring)
-		defer func() {
-			if err := response.Body.Close(); err != nil {
-				return
-			}
-		}()
-
-		bytes, _ := ioutil.ReadAll(response.Body)
-
-		path01 := filepath.Join(base, split[0][0:2])
-		notExistorCreat(path01)
-		path02 := filepath.Join(path01, split[0][2:4])
-		notExistorCreat(path02)
-		//join := filepath.Join(base, fileid)
-		join := filepath.Join(path02, fileid)
-		tfile, err := os.Create(join)
-		if err != nil {
-			fmt.Println(err)
+	response, _ := http.Get(urlstring)
+	defer func() {
+		if err := response.Body.Close(); err != nil {
 			return
 		}
-		n, _ := tfile.Write(bytes)
-		fmt.Println("写入", n)
 	}()
+
+	bytes, _ := ioutil.ReadAll(response.Body)
+
+	path01 := filepath.Join(base, split[0][0:2])
+	notExistorCreat(path01)
+	path02 := filepath.Join(path01, split[0][2:4])
+	notExistorCreat(path02)
+	//join := filepath.Join(base, fileid)
+	join := filepath.Join(path02, fileid)
+	tfile, err := os.Create(join)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	n, _ := tfile.Write(bytes)
+	fmt.Println("写入", n)
 }
 
 func notExistorCreat(path01 string) bool {
