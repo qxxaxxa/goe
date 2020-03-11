@@ -77,7 +77,9 @@ var sizeMap = map[int]string{
 	0: B, 1: KB, 2: MB, 3: GB, 4: TB, 5: PB, 6: EB,
 }
 
-func main() {
+
+
+func gtext() {
 	//s := "/Users/xiexingan/anime/%d.html"
 	s := "D:/Downloads/%d.html"
 	infos := make([]galleryInfo, 0)

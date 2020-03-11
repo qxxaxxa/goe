@@ -8,11 +8,10 @@ import (
 	"regexp"
 )
 
-func main() {
 
+func extract() {
 	reg, _ := regexp.Compile("Code=200.+(/h.+) HTTP/1.1")
-	//file, _ := os.OpenFile("/Users/xiexingan/Downloads/log_out", os.O_RDWR, 6)
-	file, _ := os.OpenFile("D:\\Downloads\\log_out", os.O_RDWR, 6)
+	file, _ := os.OpenFile(logPath(), os.O_RDWR, 6)
 	defer func() {
 		if err := file.Close(); err != nil {
 			return
@@ -21,9 +20,9 @@ func main() {
 	bytes, _ := ioutil.ReadAll(file)
 	allString := reg.FindAllStringSubmatch(string(bytes), -1)
 
-	hurl := "https://rpooevr.ehedgzdwvjcc.hath.network:11759"
-	//linkfile, _ := os.Create("/Users/xiexingan/Downloads/links.txt")
-	linkfile, _ := os.Create("D:\\Downloads\\links.txt")
+	hurl := "https://" + hostprefix() + ".ehedgzdwvjcc.hath.network:11759"
+
+	linkfile, _ := os.Create(linkPath())
 	defer func() {
 		if err := linkfile.Close(); err != nil {
 			return
@@ -53,5 +52,4 @@ func main() {
 	//	linkfile.WriteAt([]byte(wurl), ret)
 	//	fmt.Println(wurl)
 	//}
-
 }

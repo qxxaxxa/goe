@@ -8,11 +8,12 @@ import (
 	"strconv"
 )
 
-func main() {
+
+func ana() {
 	reg, _ := regexp.Compile(`([\d]{4}-[\d]{2}-[\d]{2}T[\d]{2}:[\d]{2}):[\d]{2}Z \[debug] Proxy file download request complete for [\w]{40}-(\d+)-`)
 	proreg, _ := regexp.Compile(`([\d]{4}-[\d]{2}-[\d]{2}T[\d]{2}:[\d]{2}):[\d]{2}Z \[info] {[\d]+\/[\d.]+}[\s]+Code=200 Bytes=([\d]+)[\s]+Finished processing request in `)
-	file, _ := os.OpenFile("/Users/xiexingan/Downloads/log_out", os.O_RDWR, 6)
-	//file, _ := os.OpenFile("D:\\Downloads\\log_out", os.O_RDWR, 6)
+	file, _ := os.OpenFile(logPath(), os.O_RDWR, 6)
+
 	defer func() {
 		if err := file.Close(); err != nil {
 			return

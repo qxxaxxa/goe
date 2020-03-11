@@ -26,7 +26,8 @@ set http_proxy=http://127.0.0.1:7890
 set https_proxy=http://127.0.0.1:7890
 
 */
-func main() {
+
+func crawler() {
 	proxyAddr := "http://127.0.0.1:7890"
 	cli = newHttpProxyCli(proxyAddr)
 	//lastPage, done := getPageCount()
@@ -34,8 +35,7 @@ func main() {
 	//	return
 	//}
 	quit := make(chan bool)
-	//os.Create("/Users/xiexingan/anime/gallery.txt")
-	os.Create("C:/Users/Happy/Desktop/gallery.txt")
+	os.Create(galleryPath())
 	lastPage := 10
 	go func() {
 		for i := 1; i < lastPage+1; i++ {
@@ -67,8 +67,8 @@ func main() {
 	}()
 	go func() {
 		fmt.Println("begin open file")
-		//file, err := os.OpenFile("/Users/xiexingan/anime/gallery.txt", os.O_RDWR, 6)
-		file, err := os.OpenFile("C:/Users/Happy/Desktop/gallery.txt", os.O_RDWR, 6)
+
+		file, err := os.OpenFile(galleryPath(), os.O_RDWR, 6)
 
 		defer func() {
 			if err := file.Close(); err != nil {
@@ -147,6 +147,7 @@ func main() {
 				downloadUrl: downloadUrl,
 				chLoGrp:     chLoGrp,
 			}
+			fmt.Println(gi)
 
 		}
 	}()
@@ -154,7 +155,6 @@ func main() {
 	<-quit
 
 }
-
 func writeGalleryUrltoFile(file *os.File, gurl string) {
 	offset, _ := file.Seek(0, io.SeekEnd)
 	_, err := file.WriteAt([]byte(gurl+"\n"), offset)
@@ -186,8 +186,7 @@ func formatPageUrl(i int) {
 
 func savetofile() {
 	fmt.Println("begin open file")
-	file, err := os.OpenFile("/Users/xiexingan/anime/gallery.txt", os.O_RDWR, 6)
-	//file, err := os.OpenFile("C:/Users/Happy/Desktop/gallery.txt", os.O_RDWR, 6)
+	file, err := os.OpenFile(galleryPath(), os.O_RDWR, 6)
 
 	defer func() {
 		if err := file.Close(); err != nil {
