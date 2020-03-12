@@ -30,7 +30,7 @@ func imagePath() string {
 	return base
 }
 func hostprefix() string {
-	return "tlklrqx"
+	return "ftoejrs"
 }
 
 func linkPath() string {

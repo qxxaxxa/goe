@@ -16,6 +16,8 @@ import (
 
 func startdownload() {
 	base := cachePath()
+	fmt.Println("start scan saved image file")
+
 	files, _ := ioutil.ReadDir(base)
 	imap := make(map[string]int)
 	for _, dir := range files {
@@ -33,7 +35,8 @@ func startdownload() {
 			}
 		}
 	}
-
+	fmt.Println(" scan file complete")
+	fmt.Println("start read  unsaved image list")
 	file, _ := os.OpenFile(imagePath(), os.O_RDONLY, 6)
 	defer func() {
 		if err := file.Close(); err != nil {
@@ -41,15 +44,19 @@ func startdownload() {
 		}
 	}()
 	all, _ := ioutil.ReadAll(file)
+	fmt.Println("read list complete")
+	fmt.Println("start compile")
 	reg, _ := regexp.Compile(`\./[\dabcde]{2}/[\dabcde]{2}/([\w]+-[\d]+-[\d]+-[\d]+-[\w]+)`)
 	submatch := reg.FindAllStringSubmatch(string(all), -1)
+	fmt.Println(" compile complete")
 	for i, ss := range submatch {
-		time.Sleep(time.Millisecond * 100)
+
 		fileid := ss[1]
 		split := strings.Split(fileid, "-")
 		if imap[split[0]] == 1 {
 			continue
 		}
+		time.Sleep(time.Millisecond * 100)
 		fmt.Printf("第%d个\n", i)
 		rand.Seed(time.Now().UnixNano())
 		fileindex := strconv.Itoa(rand.Intn(50000))
