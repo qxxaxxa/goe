@@ -68,3 +68,15 @@ func logPath() string {
 	}
 	return base
 }
+func sha1filePath() string {
+	sysType := runtime.GOOS
+	base := ""
+	if sysType == "windows" {
+		base = "C:\\cache\\checksha1.txt"
+	}
+	if sysType == "darwin" {
+		base = "/Users/xiexingan/Downloads/cache/checksha1.txt"
+	}
+	return base
+
+}
