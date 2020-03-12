@@ -6,6 +6,7 @@ import (
 	"io/ioutil"
 	"os"
 	"path/filepath"
+	"time"
 )
 
 func checksha1() {
@@ -22,7 +23,8 @@ func checksha1() {
 				if info.IsDir() {
 					images, _ := ioutil.ReadDir(filepath.Join(base, dir.Name(), info.Name()))
 					for _, image := range images {
-						 readAndSum(base, dir, info, image)
+						time.Sleep(time.Millisecond*1)
+						go readAndSum(base, dir, info, image)
 					}
 
 				}
@@ -34,6 +36,7 @@ func checksha1() {
 }
 
 func readAndSum(base string, dir os.FileInfo, info os.FileInfo, image os.FileInfo) {
+	st := time.Now()
 	imagePath := filepath.Join(base, dir.Name(), info.Name(), image.Name())
 	file, _ := os.OpenFile(imagePath, os.O_RDONLY, os.ModePerm)
 	defer func() {
@@ -45,6 +48,8 @@ func readAndSum(base string, dir os.FileInfo, info os.FileInfo, image os.FileInf
 	hash := sha1.New()
 	hash.Write(bytes)
 	sum := hash.Sum(nil)
+	en := time.Now()
+	fmt.Println(image.Name(), "comsume:", en.Sub(st).Milliseconds(), "millsencond")
 	if fmt.Sprintf("%x", sum) != image.Name()[0:40] {
 		fmt.Println(imagePath)
 	}
