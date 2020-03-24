@@ -46,7 +46,7 @@ func startdownload() {
 	all, _ := ioutil.ReadAll(file)
 	fmt.Println("read list complete")
 	fmt.Println("start compile")
-	reg, _ := regexp.Compile(`\./[\dabcde]{2}/[\dabcde]{2}/([\w]+-[\d]+-[\d]+-[\d]+-[\w]+)`)
+	reg, _ := regexp.Compile(`/[\dabcdef]{2}/[\dabcdef]{2}/([\w]+-[\d]+-[\d]+-[\d]+-[\w]+)`)
 	submatch := reg.FindAllStringSubmatch(string(all), -1)
 	fmt.Println(" compile complete")
 	for i, ss := range submatch {
@@ -63,9 +63,10 @@ func startdownload() {
 		keystampTime := strconv.FormatInt(time.Now().Unix(), 10)
 		clientKey := "X72CuATxVA6Yhy4sTmws"
 		sum := sha1.Sum([]byte(keystampTime + "-" + fileid + "-" + clientKey + "-hotlinkthis"))
-		urlstring := "https://" + hostprefix() + ".ehedgzdwvjcc.hath.network:11759/h/" + fileid + "/keystamp=" + keystampTime + "-" + fmt.Sprintf("%x", sum)[0:10] + ";fileindex=" + fileindex + ";xres=org/" + split[0] + "." + split[4]
+		urlstring := "https://" + hostprefix() + "." + hentaihost() +
+			".hath.network:11759/h/" + fileid + "/keystamp=" + keystampTime + "-" + fmt.Sprintf("%x", sum)[0:10] + ";fileindex=" + fileindex + ";xres=org/" + split[0] + "." + split[4]
 		fmt.Println(urlstring)
-
+		fmt.Println(fileid)
 		go download(urlstring, base, split, fileid)
 	}
 

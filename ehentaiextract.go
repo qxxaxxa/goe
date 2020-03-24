@@ -8,7 +8,6 @@ import (
 	"regexp"
 )
 
-
 func extract() {
 	reg, _ := regexp.Compile("Code=200.+(/h.+) HTTP/1.1")
 	file, _ := os.OpenFile(logPath(), os.O_RDWR, 6)
@@ -20,7 +19,8 @@ func extract() {
 	bytes, _ := ioutil.ReadAll(file)
 	allString := reg.FindAllStringSubmatch(string(bytes), -1)
 
-	hurl := "https://" + hostprefix() + ".ehedgzdwvjcc.hath.network:11759"
+	hurl := "https://" + hostprefix() + "." + hentaihost() +
+		".hath.network:11759"
 
 	linkfile, _ := os.Create(linkPath())
 	defer func() {

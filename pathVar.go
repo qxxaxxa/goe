@@ -29,8 +29,23 @@ func imagePath() string {
 	}
 	return base
 }
+func savedPath() string {
+	sysType := runtime.GOOS
+	base := ""
+	if sysType == "windows" {
+		base = "D:\\Downloads\\saved.txt"
+	}
+	if sysType == "darwin" {
+		base = "/Users/xiexingan/Downloads/saved.txt"
+	}
+	return base
+}
+
 func hostprefix() string {
-	return "ftoejrs"
+	return "qugxjjz"
+}
+func hentaihost() string {
+	return "pgbzwylrvito"
 }
 
 func linkPath() string {
